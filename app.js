@@ -8,7 +8,7 @@ let gameState = {
 };
 
 // Test mode - set to true to allow unlimited plays
-const TEST_MODE = false;
+const TEST_MODE = true;
 
 // Get today's date string (YYYY-MM-DD)
 function getTodayDateString() {
@@ -475,3 +475,4 @@ window.addEventListener('load', () => {
         localStorage.setItem('contextCluesVisited', 'true');
     }
 });
+
