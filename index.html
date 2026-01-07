@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- SEO Meta Tags -->
+    <title>Context Clues - Daily Vocabulary Challenge</title>
+    <meta name="description" content="Test your vocabulary skills with our daily word game! Identify word meanings from context alone. 10 levels of progressive difficulty. One wrong answer ends your challenge!">
+    <meta name="keywords" content="vocabulary game, word game, context clues, daily challenge, vocabulary quiz, word puzzle">
+    <meta name="author" content="Context Clues Game">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Context Clues - Daily Vocabulary Challenge">
+    <meta property="og:description" content="Test your vocabulary skills by identifying word meanings from context alone. New challenge daily!">
+    <meta property="og:image" content="https://yourusername.github.io/context-clues-game/preview.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Context Clues - Daily Vocabulary Challenge">
+    <meta name="twitter:description" content="Test your vocabulary skills by identifying word meanings from context alone. New challenge daily!">
+    <meta name="twitter:image" content="https://yourusername.github.io/context-clues-game/preview.png">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#3b82f6">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>Context Clues</h1>
+            <p class="tagline">Daily Challenge</p>
+        </header>
+
+        <!-- Start Screen -->
+        <div id="startScreen" class="start-screen">
+            <div class="challenge-badge">
+                <div class="challenge-icon">📅</div>
+                <div class="challenge-title">Daily Challenge</div>
+                <div class="challenge-date" id="challengeDate"></div>
+            </div>
+
+            <div class="challenge-rules">
+                <h3>About This Game</h3>
+                <p class="game-description">
+                    Test your vocabulary skills by identifying word meanings from context alone.
+                    You'll see sentences with hidden words—choose the correct definition without ever seeing the word itself.
+                    Progress through 10 levels of increasing difficulty, but beware: one wrong answer ends your challenge!
+                </p>
+            </div>
+
+            <div class="today-stats" id="todayStats">
+                <!-- Will show if already played today -->
+            </div>
+
+            <button class="btn-start" onclick="startChallenge()" id="startButton">
+                Start Today's Challenge
+            </button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar" style="display: none;">
+            <div class="progress-label">Level <span id="currentLevel">1</span> of 10</div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="difficulty-indicator" id="difficultyIndicator">Easy</div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="game-screen">
+            <!-- Sentence Display -->
+            <div class="sentence-container">
+                <div class="instruction">Read the sentence carefully:</div>
+                <div class="sentence" id="sentence">
+                    The artist's work was <span class="blank">_____</span>, drawing praise from critics worldwide.
+                </div>
+            </div>
+
+            <!-- Definition Choices -->
+            <div class="definition-instruction">Which definition best fits the missing word?</div>
+            <div class="choices" id="choices">
+                <!-- Choices will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="resultScreen" class="result-screen" style="display: none;">
+            <div class="result-header">
+                <div class="result-icon" id="resultIcon">✓</div>
+                <div class="result-title" id="resultTitle">Correct!</div>
+            </div>
+
+            <div class="reveal-box">
+                <div class="reveal-label">The missing word was:</div>
+                <div class="reveal-word" id="revealWord">EXEMPLARY</div>
+            </div>
+
+            <div class="explanation-box">
+                <div class="explanation-title">Full Sentence:</div>
+                <div class="explanation-text" id="fullSentence"></div>
+            </div>
+
+            <div class="definition-box">
+                <div class="definition-label">Definition:</div>
+                <div class="definition-text" id="correctDefinition"></div>
+            </div>
+
+            <button class="btn-next" onclick="nextRound()">
+                Next Round →
+            </button>
+        </div>
+
+        <!-- End Game Screen -->
+        <div id="endScreen" class="end-screen" style="display: none;">
+            <div class="end-icon" id="endIcon">🏆</div>
+            <h2 id="endTitle">Challenge Complete!</h2>
+
+            <div class="final-level">
+                <div class="final-level-label">You reached</div>
+                <div class="final-level-value">Level <span id="finalLevel">6</span></div>
+            </div>
+
+            <div class="performance-message" id="performanceMessage"></div>
+
+            <div class="share-container">
+                <button class="btn-share" onclick="shareResults()">📤 Share Results</button>
+            </div>
+
+            <div class="next-challenge">
+                <div class="next-label">Next challenge in:</div>
+                <div class="countdown" id="countdown">23:45:12</div>
+            </div>
+
+            <div class="end-actions">
+                <button class="btn-secondary" onclick="viewStats()">View Stats</button>
+            </div>
+        </div>
+
+        <!-- Instructions Button -->
+        <button class="btn-instructions" onclick="toggleInstructions()">?</button>
+
+        <!-- Instructions Modal -->
+        <div id="instructionsModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <button class="modal-close" onclick="toggleInstructions()">×</button>
+                <h2>How to Play</h2>
+
+                <div class="instructions-content">
+                    <h3>Daily Challenge</h3>
+                    <p>Every day at midnight, a new challenge begins with <strong>10 sentences</strong> that get progressively harder.</p>
+
+                    <h3>How It Works</h3>
+                    <p>Read a sentence with one word hidden. Choose the definition that best fits the missing word based on context clues. <strong>You never see the word until after you answer!</strong></p>
+
+                    <h3>The Challenge</h3>
+                    <ul>
+                        <li>Level 1-3: Easy everyday words</li>
+                        <li>Level 4-7: Medium college-level words</li>
+                        <li>Level 8-10: Hard advanced vocabulary</li>
+                        <li>❌ <strong>One wrong answer ends the game!</strong></li>
+                    </ul>
+
+                    <h3>Example</h3>
+                    <div class="example-box">
+                        <p><strong>Sentence:</strong> "The detective's _____ nature helped solve the case."</p>
+                        <p><strong>Choose the definition that fits:</strong></p>
+                        <ul>
+                            <li>A) Showing great attention to detail</li>
+                            <li>B) Feeling extreme sadness</li>
+                        </ul>
+                        <p><strong>Answer:</strong> A - The word was "meticulous"</p>
+                    </div>
+
+                    <h3>Tips</h3>
+                    <ul>
+                        <li>Look for context clues in the sentence</li>
+                        <li>Consider the tone and meaning</li>
+                        <li>Eliminate definitions that don't fit</li>
+                        <li>One mistake ends the challenge!</li>
+                    </ul>
+                </div>
+
+                <button class="btn-primary" onclick="toggleInstructions()">Got It!</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="words.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
